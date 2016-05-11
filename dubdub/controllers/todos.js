@@ -14,6 +14,7 @@ todo.create = function(req, res){
   task.title = req.body.title;
   task.priority = req.body.priority;
   task.difficulty = req.body.difficulty;
+  task.isComplete = false;
   task.createdAt = new Date();
   task.updatedAt = task.createdAt;
   task.save(function(err){
@@ -29,14 +30,15 @@ todo.update = function(req, res){
     task.difficulty = req.body.difficulty;
     task.updatedAt = new Date();
     if(req.body.completed){
+      task.isComplete = true;
       task.completedOn = new Date();
     }
     task.save(function(err){
       if(err) res.json(err);
       res.json(task);
     });
-  })
-}
+  });
+};
 
 todo.destroy = function(req, res){
   Todo.findById(req.params.id, function(err, task){
